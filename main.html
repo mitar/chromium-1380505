@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Test</title>
+</head>
+<body>
+  <p>Loaded data:</p>
+  <div>JSON: <span id="show-json"></span></div>
+  <div>HTML: <span id="show-html"></span></div>
+  <script>
+    (async function() {
+      const data = await fetch("/data.json", {
+        method: "GET",
+        headers: {
+          "Accept": "application/json",
+        },
+        cache: "force-cache",
+        mode: "cors",
+        credentials: "omit",
+        referrer: document.location.href,
+        referrerPolicy: "strict-origin-when-cross-origin",
+      }).then(async (response) => JSON.stringify(await response.json())).catch((error) => ""+error);
+      document.getElementById("show-json").innerText = data;
+    })();
+    (async function() {
+      const data = await fetch("/data.json", {
+        method: "GET",
+        headers: {
+          "Accept": "text/html",
+        },
+        cache: "force-cache",
+        mode: "cors",
+        credentials: "omit",
+        referrer: document.location.href,
+        referrerPolicy: "strict-origin-when-cross-origin",
+      }).then(async (response) => (await response.text()).split('\n')[0]).catch((error) => ""+error);
+      document.getElementById("show-html").innerText = data;
+    })();
+    </script>
+</body>
+</html>
